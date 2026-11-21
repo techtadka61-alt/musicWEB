@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+
+/* Dark-only premium theme: charcoal surfaces with a warm gold accent. */
+:root {
+  --background: #0b0b0c;
+  --surface: #151517;
+  --surface-raised: #1d1d20;
+  --line: #2a2a2e;
+  --foreground: #f2efe9;
+  --muted: #9a968e;
+  --accent: #d4af6a;
+  --accent-strong: #e8c886;
+
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --font-sans: var(--font-sans-family), 'Noto Sans Devanagari', 'Mangal', system-ui, sans-serif;
+  --font-display: var(--font-display-family);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Range inputs (seek + volume): thin gold track that fills up to --range-progress. */
+.range-input {
+  appearance: none;
+  height: 1rem;
+  background: transparent;
+  cursor: pointer;
+}
+.range-input::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) var(--range-progress, 0%),
+    var(--line) var(--range-progress, 0%)
+  );
+}
+.range-input::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--line);
+}
+.range-input::-moz-range-progress {
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+.range-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5px;
+  border-radius: 9999px;
+  background: var(--foreground);
+  box-shadow: 0 0 0 3px rgb(0 0 0 / 0.35);
+}
+.range-input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--foreground);
+}
+.range-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
+
+/* "Now playing" bars. */
+@keyframes equalizer {
+  0%,
+  100% {
+    height: 25%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+.equalizer-bar {
+  height: 25%;
+  animation: equalizer 0.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Carousel: native scrolling with the scrollbar hidden and faded edges while more is offscreen. */
+.carousel-track {
+  --fade-start: 0px;
+  --fade-end: 0px;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--fade-start),
+    #000 calc(100% - var(--fade-end)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--fade-start),
+    #000 calc(100% - var(--fade-end)),
+    transparent 100%
+  );
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+.carousel-fade-start {
+  --fade-start: 2.5rem;
+}
+.carousel-fade-end {
+  --fade-end: 2.5rem;
+}
+
+/* Home banner: on larger screens the full video frame fades in from the left. */
+@media (width >= 40rem) {
+  .hero-frame {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 30%);
+    mask-image: linear-gradient(to right, transparent, #000 30%);
+  }
+}
